@@ -16,6 +16,11 @@ class ViewController: UIViewController {
     var resultView = UIView()
     var showNumbers = UIButton()
     var oldTextfieldValue = 0   //This value is used to rollback UITextfield value is input is not number between 0-255
+    
+    
+    var regularConstraints = [NSLayoutConstraint]()
+    var compactConstraints = [NSLayoutConstraint]()
+    
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,10 +43,13 @@ class ViewController: UIViewController {
         sliderStack.spacing = 20; textfieldStack.spacing = 20
 
         blueTextField.delegate = self; greenTextField.delegate = self; redTextField.delegate = self
-        self.view.addSubview(sliderStack); self.view.addSubview(textfieldStack); self.view.addSubview(resultView); self.view.addSubview(showNumbers)
+        self.view.addSubview(sliderStack); self.view.addSubview(textfieldStack); self.view.addSubview(resultView);
+        
+//        self.view.addSubview(showNumbers)
         
         sliderStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         sliderStack.centerYAnchor.constraint(equalTo: view.readableContentGuide.topAnchor, constant: 150).isActive = true
+        sliderStack.widthAnchor.constraint(equalToConstant: 300).isActive = true
         
         textfieldStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         textfieldStack.topAnchor.constraint(equalTo: sliderStack.bottomAnchor, constant: 50).isActive = true
@@ -51,11 +59,25 @@ class ViewController: UIViewController {
         resultView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor).isActive = true
         resultView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor).isActive = true
         resultView.bottomAnchor.constraint(equalTo: view.readableContentGuide.bottomAnchor, constant: -20).isActive = true
-        
-        showNumbers.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor).isActive = true
-        showNumbers.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+
+//        showNumbers.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor).isActive = true
+//        showNumbers.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        //Check size class
+        if traitCollection.horizontalSizeClass == .regular {
+            NSLayoutConstraint.deactivate(compactConstraints)
+            NSLayoutConstraint.activate(regularConstraints)
+//            socialMediaView.axis = .horizontal
+        } else {
+            NSLayoutConstraint.deactivate(regularConstraints)
+            NSLayoutConstraint.activate(compactConstraints)
+//            socialMediaView.axis = .vertical
+        }
+    }
     
     func setupShowNumbersButton(button: UIButton) -> UIButton{
          let temp = button
@@ -122,7 +144,6 @@ class ViewController: UIViewController {
         temp.maximumValue = 255
         temp.thumbTintColor = color
         temp.addTarget(self, action: #selector(sliderChanged(sender:)), for: .valueChanged)
-        temp.widthAnchor.constraint(equalToConstant: 350).isActive = true
         return temp
     }
     
