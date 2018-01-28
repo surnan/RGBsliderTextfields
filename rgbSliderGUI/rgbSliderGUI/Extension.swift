@@ -12,7 +12,7 @@ extension ViewController: UITextFieldDelegate {
     
     // MARK:- ---> Textfield Delegates
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        //print("TextField did begin editing method called")
+        print("TextField did begin editing method called")
     }
     
     private func textFieldDidEndEditing(textField: UITextField) {
@@ -21,25 +21,24 @@ extension ViewController: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        //print("TextField should begin editing method called")
+        print("TextField should begin editing method called")
+        oldTextfieldValue = Int(textField.text!)!
+        textField.text = ""
         return true;
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        //print("TextField should clear method called")
+        print("TextField should clear method called")
         return true;
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         print("TextField should end editing method called")
-        textField.resignFirstResponder()  // <--- DOES NOT WORK
-        self.view.endEditing(true)  // <--- DOES NOT WORK
-        print("DISMISS KEYBOARD")
         return true;
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        //print("While entering the characters this method gets called")
+        print("While entering the characters this method gets called")
         return true;
     }
     
@@ -51,17 +50,4 @@ extension ViewController: UITextFieldDelegate {
     // MARK: Textfield Delegate
 }
 
-//extension UIViewController
-//{
-//    func hideKeyboard()
-//    {
-//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-//        view.addGestureRecognizer(tap)
-//    }
-//    
-//    @objc func dismissKeyboard()
-//    {
-//        view.endEditing(true)
-//    }
-//}
 

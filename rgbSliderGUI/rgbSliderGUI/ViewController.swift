@@ -15,13 +15,13 @@ class ViewController: UIViewController {
     var greenSlider = UISlider(); var greenTextField = UITextField(); var greenValue: Float = 0.0
     var resultView = UIView()
     var showNumbers = UIButton()
-    
+    var oldTextfieldValue = 0   //This value is used to rollback UITextfield value is input is not number between 0-255
  
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.purple
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
- 
+
         let sliderStack = setupSliderStack(allSliders: redSlider, blueSlider, greenSlider)
         let textfieldStack = setupTextFieldStack(allTextView: redTextField, blueTextField, greenTextField)
         resultView = setupResultView(resultView: resultView)
@@ -37,6 +37,7 @@ class ViewController: UIViewController {
         sliderStack.alignment = .fill; textfieldStack.alignment = .fill
         sliderStack.spacing = 20; textfieldStack.spacing = 20
 
+        blueTextField.delegate = self; greenTextField.delegate = self; redTextField.delegate = self
         self.view.addSubview(sliderStack); self.view.addSubview(textfieldStack); self.view.addSubview(resultView); self.view.addSubview(showNumbers)
         
         sliderStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -68,18 +69,10 @@ class ViewController: UIViewController {
     
     func updateResultView(color: UIColor, magnitude: CGFloat){
   
-        /*
-        BELOW DOESN'T WORK.  CONTINUOSLY COPYING FLOATS LEADS TO DRAMA
-        let tempRed = resultView.backgroundColor?.rValue ?? 0.0
-        let tempBlue = resultView.backgroundColor?.bValue ?? 0.0
-        let tempGreen = resultView.backgroundColor?.gValue ?? 0.0
-        */
-        
         let ttempRed = CGFloat(Int(redTextField.text!)!)
         let ttempBlue = CGFloat(Int(blueTextField.text!)!)
         let ttempGreen = CGFloat(Int(greenTextField.text!)!)
 
-    
        switch color {
         case UIColor.red: resultView.backgroundColor = UIColor(displayP3Red: magnitude/255, green: ttempGreen/255, blue: ttempBlue/255, alpha: 1.0)
         case UIColor.green: resultView.backgroundColor = UIColor(displayP3Red: ttempRed/255, green: magnitude/255, blue: ttempBlue/255, alpha: 1.0)
@@ -122,16 +115,13 @@ class ViewController: UIViewController {
 
     func setupSliders(color: UIColor, slider: UISlider) -> UISlider {
         let temp = slider
-        
         temp.isContinuous = true
         temp.minimumTrackTintColor = .white
         temp.maximumTrackTintColor = color
         temp.minimumValue = 0
         temp.maximumValue = 255
         temp.thumbTintColor = color
-        
         temp.addTarget(self, action: #selector(sliderChanged(sender:)), for: .valueChanged)
-        
         temp.widthAnchor.constraint(equalToConstant: 350).isActive = true
         return temp
     }
