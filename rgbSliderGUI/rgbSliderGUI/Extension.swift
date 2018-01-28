@@ -23,7 +23,7 @@ extension ViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("TextField should begin editing method called")
         oldTextfieldValue = Int(textField.text!)!
-        textField.text = ""
+//        textField.text = ""
         return true;
     }
     
