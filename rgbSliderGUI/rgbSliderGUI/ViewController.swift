@@ -47,19 +47,22 @@ class ViewController: UIViewController {
         
 //        self.view.addSubview(showNumbers)
         
-        sliderStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        sliderStack.centerYAnchor.constraint(equalTo: view.readableContentGuide.topAnchor, constant: 150).isActive = true
-        sliderStack.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        let sliderStackCenterX = sliderStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        let sliderStackCenterY = sliderStack.centerYAnchor.constraint(equalTo: view.readableContentGuide.topAnchor, constant: 150)
+        let sliderStackWidth = sliderStack.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
         
-        textfieldStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textfieldStack.topAnchor.constraint(equalTo: sliderStack.bottomAnchor, constant: 50).isActive = true
+        let textfieldCenterX = textfieldStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        let textfieldTop = textfieldStack.topAnchor.constraint(equalTo: sliderStack.bottomAnchor, constant: 50)
         
-        resultView.topAnchor.constraint(equalTo: textfieldStack.bottomAnchor, constant: 50).isActive = true
-        resultView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        resultView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor).isActive = true
-        resultView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor).isActive = true
-        resultView.bottomAnchor.constraint(equalTo: view.readableContentGuide.bottomAnchor, constant: -20).isActive = true
+        let resultViewTop = resultView.topAnchor.constraint(equalTo: textfieldStack.bottomAnchor, constant: 50)
+        let resultViewLeft = resultView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor)
+        let resultViewRight = resultView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor)
+        let resultViewBottom = resultView.bottomAnchor.constraint(equalTo: view.readableContentGuide.bottomAnchor, constant: -20)
 
+        compactConstraints.append(sliderStackCenterX); compactConstraints.append(sliderStackCenterY); compactConstraints.append(sliderStackWidth)
+        compactConstraints.append(textfieldCenterX); compactConstraints.append(textfieldTop)
+        compactConstraints.append(resultViewTop); compactConstraints.append(resultViewLeft); compactConstraints.append(resultViewRight); compactConstraints.append(resultViewBottom)
+        
 //        showNumbers.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor).isActive = true
 //        showNumbers.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
