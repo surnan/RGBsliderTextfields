@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     var regularConstraints = [NSLayoutConstraint]()
     var compactConstraints = [NSLayoutConstraint]()
     
+    var bigStack = UIStackView()
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,12 +31,9 @@ class ViewController: UIViewController {
         let sliderStack = setupSliderStack(allSliders: redSlider, blueSlider, greenSlider)
         let textfieldStack = setupTextFieldStack(allTextView: redTextField, blueTextField, greenTextField)
         resultView = setupResultView(resultView: resultView)
-        showNumbers = setupShowNumbersButton(button: showNumbers)
         
-        sliderStack.translatesAutoresizingMaskIntoConstraints = false
-        textfieldStack.translatesAutoresizingMaskIntoConstraints = false
-        resultView.translatesAutoresizingMaskIntoConstraints = false
-        showNumbers.translatesAutoresizingMaskIntoConstraints = false
+        sliderStack.translatesAutoresizingMaskIntoConstraints = false; textfieldStack.translatesAutoresizingMaskIntoConstraints = false
+        resultView.translatesAutoresizingMaskIntoConstraints = false; showNumbers.translatesAutoresizingMaskIntoConstraints = false
         
         setupAllGUI()
         sliderStack.axis = .vertical; textfieldStack.axis = .vertical
@@ -45,26 +43,31 @@ class ViewController: UIViewController {
         blueTextField.delegate = self; greenTextField.delegate = self; redTextField.delegate = self
         self.view.addSubview(sliderStack); self.view.addSubview(textfieldStack); self.view.addSubview(resultView);
         
-//        self.view.addSubview(showNumbers)
-        
         let sliderStackCenterX = sliderStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let sliderStackCenterY = sliderStack.centerYAnchor.constraint(equalTo: view.readableContentGuide.topAnchor, constant: 150)
         let sliderStackWidth = sliderStack.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
-        
         let textfieldCenterX = textfieldStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let textfieldTop = textfieldStack.topAnchor.constraint(equalTo: sliderStack.bottomAnchor, constant: 50)
         
-        let resultViewTop = resultView.topAnchor.constraint(equalTo: textfieldStack.bottomAnchor, constant: 50)
-        let resultViewLeft = resultView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor)
-        let resultViewRight = resultView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor)
-        let resultViewBottom = resultView.bottomAnchor.constraint(equalTo: view.readableContentGuide.bottomAnchor, constant: -20)
-
         compactConstraints.append(sliderStackCenterX); compactConstraints.append(sliderStackCenterY); compactConstraints.append(sliderStackWidth)
         compactConstraints.append(textfieldCenterX); compactConstraints.append(textfieldTop)
-        compactConstraints.append(resultViewTop); compactConstraints.append(resultViewLeft); compactConstraints.append(resultViewRight); compactConstraints.append(resultViewBottom)
+     
+        bigStack.translatesAutoresizingMaskIntoConstraints = false
+        bigStack.addArrangedSubview(sliderStack); bigStack.addArrangedSubview(textfieldStack)
+        bigStack.alignment = .center; bigStack.spacing = 20
+        view.addSubview(bigStack)
         
-//        showNumbers.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor).isActive = true
-//        showNumbers.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        let bigStackCenterX = bigStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        let bigStackTop = bigStack.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor, constant: 20)
+        let bigStackWidth = bigStack.widthAnchor.constraint(equalTo: view.readableContentGuide.widthAnchor)
+
+        regularConstraints.append(bigStackWidth); regularConstraints.append(bigStackCenterX);
+        regularConstraints.append(bigStackTop)
+
+        resultView.topAnchor.constraint(equalTo: bigStack.bottomAnchor, constant: 20).isActive = true
+        resultView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor).isActive = true
+        resultView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor).isActive = true
+        resultView.bottomAnchor.constraint(equalTo: view.readableContentGuide.bottomAnchor, constant: -20).isActive = true
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -74,11 +77,11 @@ class ViewController: UIViewController {
         if traitCollection.horizontalSizeClass == .regular {
             NSLayoutConstraint.deactivate(compactConstraints)
             NSLayoutConstraint.activate(regularConstraints)
-//            socialMediaView.axis = .horizontal
+            bigStack.axis = .horizontal
         } else {
             NSLayoutConstraint.deactivate(regularConstraints)
             NSLayoutConstraint.activate(compactConstraints)
-//            socialMediaView.axis = .vertical
+            bigStack.axis = .vertical
         }
     }
     
@@ -87,13 +90,11 @@ class ViewController: UIViewController {
         temp.backgroundColor = UIColor.white
         temp.setTitle("SHOW NUMBERS", for: .normal)
         temp.setTitleColor(UIColor.black, for: .normal)
-        temp.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+//        temp.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         return temp
     }
     
-    
     func updateResultView(color: UIColor, magnitude: CGFloat){
-  
         let ttempRed = CGFloat(Int(redTextField.text!)!)
         let ttempBlue = CGFloat(Int(blueTextField.text!)!)
         let ttempGreen = CGFloat(Int(greenTextField.text!)!)
@@ -106,7 +107,6 @@ class ViewController: UIViewController {
             print("BAD INPUT COLOR")
         }
     }
-    
     
     func setupSliderStack(allSliders: UISlider...)-> UIStackView {
         let tempSliderStack = UIStackView()
@@ -131,7 +131,6 @@ class ViewController: UIViewController {
         temp.text = "0"
         temp.textAlignment = .center
         temp.clearsOnInsertion = true
-        
         temp.keyboardType = .numberPad
         temp.addTarget(self, action: #selector(textFieldChanged), for: .editingDidEnd)
         temp.widthAnchor.constraint(equalToConstant: 75).isActive = true
@@ -165,6 +164,3 @@ class ViewController: UIViewController {
         return tempView
     }
 }
-
-
-

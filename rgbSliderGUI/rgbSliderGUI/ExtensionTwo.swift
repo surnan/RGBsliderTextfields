@@ -9,11 +9,8 @@
 import UIKit
 
 extension ViewController {
-
     
     @objc func textFieldChanged(sender: UITextField){
-        
-        
         let myAlertController = UIAlertController(title: "!! INVALID INPUT !!", message: "Values from 0 to 255", preferredStyle: .alert)
         myAlertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: nil))
         
@@ -33,7 +30,6 @@ extension ViewController {
         default:
             print("Invalid Slider Chosen")
         }
-
         destinationSlider.value = Float(sender.text!) ?? 0.0
     }
 
@@ -49,13 +45,13 @@ extension ViewController {
         }
         destinationTextField.text = String(Int(sender.value))
     }
-    
-    @objc func buttonPressed(sender: UIButton){
-        let tempRed = resultView.backgroundColor?.rValue ?? 0.0
-        let tempBlue = resultView.backgroundColor?.bValue ?? 0.0
-        let tempGreen = resultView.backgroundColor?.gValue ?? 0.0
-        print("R = \(tempRed) .... G = \(tempGreen) .... B = \(tempBlue)")
-    }
+//    
+//    @objc func buttonPressed(sender: UIButton){
+//        let tempRed = resultView.backgroundColor?.rValue ?? 0.0
+//        let tempBlue = resultView.backgroundColor?.bValue ?? 0.0
+//        let tempGreen = resultView.backgroundColor?.gValue ?? 0.0
+//        print("R = \(tempRed) .... G = \(tempGreen) .... B = \(tempBlue)")
+//    }
 }
 
 extension UIColor {
